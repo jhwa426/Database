@@ -1,2 +1,2 @@
 # SQL
-It is all about SQL
+Learning SQL (SSMS)
