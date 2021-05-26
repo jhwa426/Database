@@ -1,4 +1,4 @@
 # SQL
-Learning SQL (SSMS)
+Learning Python at UoA (SSMS)
 
 BUSAN 201 (UoA)
