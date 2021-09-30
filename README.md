@@ -1,6 +1,6 @@
 # SQL
 
-Learning SSMS at UoA
+Learning database at UoA
 
 BUSAN 201
 
