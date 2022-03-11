@@ -1,0 +1,144 @@
+--INFOSYS 222 Assignment A2P2
+--Name : Jeff Hwang
+--UPI : jhwa426
+
+--Q01
+SELECT 'Jeff' AS 'First Name', 'Hwang' AS 'Last Name', '107793487' AS 'ID', 'Hello World!, I am Jeff Nice to meet you! :)' AS 'Description';
+
+--Q02
+SELECT *
+FROM Artist
+WHERE Name LIKE 'F%';
+
+--Q03
+SELECT *
+FROM Album
+WHERE AlbumID % 23 = 0;
+
+--Q04
+SELECT LastName || ', ' || FirstName AS 'Name'
+FROM Employee
+ORDER BY  length(LastName || ', ' || FirstName);
+
+--Q05
+UPDATE Employee
+SET Fax = '+' || Fax, Phone = '+' || Phone
+WHERE INSTR(Fax, '+') = 0 AND INSTR(Phone, '+') = 0;
+
+--Q06
+CREATE TABLE Login (
+	Username TEXT PRIMARY KEY,
+	Password TEXT NOT NULL,
+	LastUpdate DATE CURRENT_TIMESTAMP,
+	CustomerID INTEGER,
+	Status TEXT CHECK (Status = 'active' OR Status = 'inactive'),
+	FOREIGN KEY (CustomerID) REFERENCES Customer
+);
+
+--Q07
+SELECT Name
+FROM Track
+WHERE Name LIKE '%right'  OR Name LIKE 'right%' OR Name LIKE '% right %';
+
+--Q08
+SELECT Name
+FROM Track
+WHERE Name NOT LIKE 'time' AND Name NOT LIKE 'time %' AND Name NOT LIKE '% time' AND Name NOT LIKE '%_time %' AND Name LIKE '%time%';
+
+--Q09
+SELECT a.Title AS 'Album', COUNT(t.TrackID) AS 'Tracks', SUM(UnitPrice) AS 'Price'
+FROM Album a JOIN Track t ON a.AlbumID = t.AlbumID
+GROUP BY a.Title
+HAVING Price >= 30.0
+ORDER BY Price DESC;
+
+--Q10
+SELECT DISTINCT tem.FirstName AS 'Name',
+CAST((julianday('now', 'localtime') - julianday(tem.BirthDate)) / 365.0 AS INT) AS 'Age'
+FROM Employee e, Employee tem
+WHERE e.ReportsTo = tem.EmployeeID
+ORDER BY Age
+LIMIT 1;
+
+--Q11
+INSERT INTO Playlist (Name) VALUES
+('Background music');
+
+INSERT INTO PlaylistTrack( PlaylistID, TrackID)
+SELECT  (SELECT PlaylistID FROM Playlist WHERE Name = 'Background music' )
+PlaylistID, TrackID
+FROM Track
+WHERE GenreID = (SELECT GenreID FROM Genre WHERE (name) = 'JAZZ')
+ORDER BY Millisecond DESC
+LIMIT 10;
+
+--Q12
+SELECT CASE
+	WHEN mt.Name LIKE '%AAC%' THEN 'AAC'
+	WHEN mt.Name NOT LIKE '%AAC%' THEN 'non-ACC'
+	END AS Media,
+	COUNT(CASE
+	WHEN mt.Name LIKE '%AAC%' THEN 'AAC'
+	WHEN mt.Name NOT LIKE '%AAC%' THEN 'non-ACC'
+	END) AS Tracks
+FROM MediaType mt JOIN Track t ON mt.MediaTypeID = t.MediaTypeID
+GROUP BY (CASE
+	WHEN mt.Name LIKE '%AAC%' THEN 'AAC'
+	WHEN mt.Name NOT LIKE '%AAC%' THEN 'non-ACC'
+	END)
+UNION ALL
+SELECT 'Total' AS Media, COUNT(TrackID) AS Tracks
+FROM Track;
+
+--Q13
+SELECT Title AS 'Album', group_concat(DISTINCT g.name) AS 'Genre'
+FROM Album AS a
+JOIN Track t ON a.AlbumID = t.AlbumID
+JOIN Genre g ON g.GenreID = t.GenreID
+GROUP BY Title
+HAVING COUNT(DISTINCT g.name)>1;
+
+--Q14
+SELECT CASE
+	WHEN Email LIKE '%yahoo%' THEN 'YAHOO'
+	WHEN Email LIKE '%gmail%' THEN 'GMAIL'
+	WHEN Email LIKE '%apple%' THEN 'APPLE'
+	WHEN Email LIKE '%hotmail%' THEN 'HOTMAIL'
+	WHEN Email LIKE '%shaw%'  THEN 'SHAW'
+	END AS Provider,
+	ROUND(
+		(COUNT(CASE
+	WHEN Email LIKE '%yahoo%' THEN 'YAHOO'
+	WHEN Email LIKE '%gmail%' THEN 'GMAIL'
+	WHEN Email LIKE '%apple%' THEN 'APPLE'
+	WHEN Email LIKE '%hotmail%' THEN 'HOTMAIL'
+	WHEN Email LIKE '%shaw%'  THEN 'SHAW'
+	END)/ 59.00) * 100 , 2) AS Percentage
+FROM Customer
+GROUP BY (CASE
+	WHEN Email LIKE '%yahoo%' THEN 'YAHOO'
+	WHEN Email LIKE '%gmail%' THEN 'GMAIL'
+	WHEN Email LIKE '%apple%' THEN 'APPLE'
+	WHEN Email LIKE '%hotmail%' THEN 'HOTMAIL'
+	WHEN Email LIKE '%shaw%'  THEN 'SHAW'
+	END)
+ORDER BY Percentage DESC
+LIMIT 5;
+
+--Q15
+CREATE VIEW CustomerView AS
+SELECT Country, SUM(Individual) AS Individual, SUM(Company)  AS Company
+FROM (SELECT Country, CASE
+	WHEN Company IS NOT NULL THEN 0
+	WHEN Company  IS NULL THEN 1
+	END Individual,
+	CASE WHEN Company IS NOT NULL THEN 1
+	WHEN Company IS NULL THEN 0
+	END Company
+FROM Customer) AS c
+GROUP BY Country
+ORDER BY Country
+
+--Execute for checking
+SELECT *
+FROM CustomerView
