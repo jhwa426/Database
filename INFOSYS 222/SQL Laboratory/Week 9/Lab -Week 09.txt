@@ -72,3 +72,5 @@ SELECT empFirstName AS 'Employee',
 	ELSE 'Inactive'
 	END AS 'Status'
 FROM Employee
+
+--Q08
