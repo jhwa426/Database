@@ -12,6 +12,8 @@ Prerequisite: 15 points from COMPSCI 101, 107, 130, INFOMGMT 192, INFOSYS 110 Re
 
 </details>
 
+<br>
+
 # INFOSYS 222 : Database Systems
 
 ## Course Overview
@@ -23,5 +25,21 @@ This course aims to develop the fundamental skills of designing and developing a
 ## Course Requirements
 
 Prerequisite: 15 points from COMPSCI 101, 105, 107, 130, INFOSYS 110
+
+</details>
+
+<br>
+
+# BUSAN 300 : Data Wrangling
+
+## Course Overview
+
+<details>
+
+This course aims to provide you with a data management toolbox that is applicable to business data among disciplines and industries; to develop your skills in analytical thinking, programmatic problem solving, and business communication; to build up your proficiency in making raw data valuable and meaningful for a business audience; and to expose you to the digital data life-cycle.
+
+## Course Requirements
+
+Prerequisite: 15 points from BUSAN 201, INFOMGMT 292, INFOSYS 222 Restriction: INFOMGMT 390
 
 </details>
